@@ -13,16 +13,44 @@ struct ContentView: View {
     @State var username = ""
     @State var password = ""
     
+    @State var authenticationDidFail = false
+    @State var authenticationDidSucceed = false
+    
     var body: some View {
-        VStack {
-            WelcomeText()
-            UserImage()
-            UsernameTextField(username: $username)
-            PasswordTextField(password: $password)
-            GreenButton(title: "LOGIN") {
-                print("Login clicked")
+        ZStack {
+            VStack {
+                WelcomeText()
+                UserImage()
+                UsernameTextField(username: $username)
+                PasswordTextField(password: $password)
+                if authenticationDidFail {
+                    Text("Information not correct. Try again")
+                        .offset(y: -10)
+                        .foregroundColor(.red)
+                }
+                GreenButton(title: "LOGIN", action: loginTapped)
+            }.padding()
+            if authenticationDidSucceed {
+                Text("Login successful!")
+                    .font(.headline)
+                    .frame(width: 250, height: 80)
+                    .background(Color.green)
+                    .cornerRadius(20.0)
+                    .foregroundColor(.white)
+                    .animation(Animation.default)
             }
-        }.padding()
+        }
+    }
+    
+    fileprivate func loginTapped() {
+        if(username.isEmpty || password.isEmpty) {
+            authenticationDidFail = true
+            authenticationDidSucceed = false
+        } else {
+            authenticationDidFail = false
+            authenticationDidSucceed = true
+        }
+        
     }
 }
 
