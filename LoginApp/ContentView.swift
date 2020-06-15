@@ -19,17 +19,9 @@ struct ContentView: View {
             UserImage()
             UsernameTextField(username: $username)
             PasswordTextField(password: $password)
-            
-            Text("LOGIN")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .frame(width: 220, height: 60)
-                .background(Color.green)
-                .cornerRadius(15)
-                .onTapGesture {
-                    print("Login tapped.")
-                }
+            GreenButton(title: "LOGIN") {
+                print("Login clicked")
+            }
         }.padding()
     }
 }
@@ -39,6 +31,26 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+struct GreenButton: View {
+    
+    var title: String
+    var action: () -> Void
+    
+    
+    var body: some View {
+        
+        Text(title)
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding()
+            .frame(width: 220, height: 60)
+            .background(Color.green)
+            .cornerRadius(15)
+            .onTapGesture(perform: action)
+    }
+}
+
 
 struct PasswordTextField: View {
     
