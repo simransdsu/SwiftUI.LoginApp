@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     
     @State var username = ""
@@ -15,6 +16,8 @@ struct ContentView: View {
     
     @State var authenticationDidFail = false
     @State var authenticationDidSucceed = false
+    
+    @ObservedObject var keyboardResponder = KeyboardResponder()
     
     var body: some View {
         ZStack {
@@ -25,10 +28,10 @@ struct ContentView: View {
                 PasswordTextField(password: $password)
                 if authenticationDidFail {
                     Text("Information not correct. Try again")
-                        .offset(y: -10)
                         .foregroundColor(.red)
                 }
-                GreenButton(title: "LOGIN", action: loginTapped)
+                GreenButton(title: "LOGIN", action: loginTapped).padding(.top, 20)
+                Spacer()
             }.padding()
             if authenticationDidSucceed {
                 Text("Login successful!")
@@ -37,9 +40,9 @@ struct ContentView: View {
                     .background(Color.green)
                     .cornerRadius(20.0)
                     .foregroundColor(.white)
-                    .animation(Animation.default)
+                    .animation(Animation.easeIn(duration: 1.2))
             }
-        }
+        }.offset(y: -keyboardResponder.currentHeight * 0.4)
     }
     
     fileprivate func loginTapped() {
@@ -97,7 +100,7 @@ struct UsernameTextField: View {
     @Binding var username: String
     
     var body: some View {
-        SecureField("Username", text: $username)
+        TextField("Username", text: $username)
             .padding()
             .background(lightGreyColor)
             .cornerRadius(10)
@@ -110,7 +113,6 @@ struct WelcomeText: View {
         Text("Welcome!")
             .font(.largeTitle)
             .fontWeight(.semibold)
-            .padding(.bottom, 20)
     }
 }
 
@@ -122,6 +124,6 @@ struct UserImage: View {
             .frame(width: 150, height: 150)
             .clipped()
             .cornerRadius(150)
-            .padding(.bottom, 75)
+            .padding()
     }
 }
